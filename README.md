@@ -6,18 +6,18 @@ Students:
 2. Sebastian Erazo Ochoa - A00400086
 3. Daniel José Plazas Cortés - A00400085
 
-## Indicaciones para la ejecución de la Tarea Integradora
+## Execution Instructions 
 
 ### IDE
 
-El IDE usado en el desarrollo de este proyecto fue InteliJIdea, por lo que NO se debería de eliminar la carpeta out, .idea o algún otro archivo propio del IDE, útil para una ejecución correcta.
+IntelliJIdea was the IDE for the development of the project, that's why the 'out' or '.idea' folder or any other folder useful for a correct execution MUSN'T be deleted.
 
-### Ejecución del programa
+### Program Execution
 
-Para poder ejecutar el código, se puede realizar fácilmente de la siguiente manera:
+Code can be executed easily following the next steps: 
 
-1. Buscar el archivo "Main.java" y abrirlo.
-2. Luego, desde la parte superior derecha del IDE, hacer click en el ícono de ejecutar.
-3. Posteriormente, el programa abrirá su propia consola, por la cual se realizará la "interfaz", la cual usted como usuario podrá usar.
-4. Siga todas las posibles indicaciones en tiempo de ejecución.
-5. El programa terminará cuando se finalice desde la misma ejecución del programa.
+1. Search for the " Main.java" folder and open it.
+2. Then, click on the execute button located at the right top of the IDE. 
+3. The program will open its console, where users can use the "interface" created.
+4. Follow all the possible indications in execution time.
+5. The program will end when the execution process is finished.  
