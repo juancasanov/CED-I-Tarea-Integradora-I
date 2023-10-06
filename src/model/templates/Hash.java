@@ -1,10 +1,11 @@
 package model.templates;
 
-public interface HashTable<K, V extends Comparable<V>> extends List<V> {
-    public boolean containsKey(Object key);
-    public boolean containsValue(Object value);
-    public V get(Object key);
+public interface Hash<K, V extends Comparable<V>> {
+    public boolean containsKey(K key);
+    public boolean containsValue(V value);
+    public V getValue(K key, V value);
     public V put(K key, V value);
-    public V remove(Object key);
+    public void remove(K key, V value);
     public int size();
+    public boolean isEmpty();
 }

@@ -1,9 +1,11 @@
 package model.templates;
 
+import model.nodes.HashNode;
+
 public abstract class Node<T extends Comparable<T>>{
     private T t;
 
-    private Node<T> next;
+    protected Node<T> next;
 
     public Node(T t){
         this.t = t;
