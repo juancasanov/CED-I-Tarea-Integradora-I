@@ -67,6 +67,17 @@ public class HashTable<K, V extends Comparable<V>> implements Hash<K, V> {
 
     @Override
     public V getValue(K key, V value) {
-       return null;
+        int index = hashFunction(key);
+        V found = null;
+
+        HashNode<K, V> current = table[index];
+        while (current != null) {
+            if (current.getKey() != null && current.getKey().equals(key) && current.getValue() != null && current.getValue().equals(value)) {
+                found = current.getValue();
+            }
+            current = current.getNext();
+        }
+
+        return found;
     }
 }

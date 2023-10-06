@@ -12,6 +12,7 @@ public class HashNode<K, V extends Comparable<V>> extends Node<V> {
     public HashNode(K key, V value) {
         super(value);
         this.key = key;
+        this.value = value;
         this.size = 1;
     }
 
@@ -46,7 +47,15 @@ public class HashNode<K, V extends Comparable<V>> extends Node<V> {
     public void removeLast() {}
 
     public V getNode(V value) {
-        return null;
+        if (next != null) {
+            if (next.getT().equals(value)) {
+                return next.getT();
+            } else {
+                return ((HashNode<K, V>) next).getNode(value);
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override
