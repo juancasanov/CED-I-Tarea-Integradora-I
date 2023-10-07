@@ -3,6 +3,8 @@ package model.nodes;
 import model.structures.HashTable;
 import model.templates.Node;
 
+import java.security.Key;
+
 public class HashNode<K, V extends Comparable<V>> extends Node<V> {
 
     private K key;
@@ -44,7 +46,7 @@ public class HashNode<K, V extends Comparable<V>> extends Node<V> {
         }
     }
 
-    public void removeLast() {}
+    public void removeNode() {}
 
     public V getNode(V value) {
         if (next != null) {
@@ -61,5 +63,19 @@ public class HashNode<K, V extends Comparable<V>> extends Node<V> {
     @Override
     public HashNode<K,V> getNext() {
         return (HashNode<K, V>) super.getNext();
+    }
+
+    public boolean containsKey(HashNode<K,V> node, K key) {
+        boolean flag = false;
+
+        if (node == null) {
+            flag = false;
+        } else if (node.getKey().equals(key)) {
+            flag = true;
+        } else {
+            containsKey(node.getNext(), key);
+        }
+
+        return flag;
     }
 }

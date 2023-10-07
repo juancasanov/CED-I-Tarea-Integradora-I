@@ -9,6 +9,7 @@ public class HashTable<K, V extends Comparable<V>> implements Hash<K, V> {
     private HashNode<K,V>[] table;
     private int size;
 
+    @SuppressWarnings("unchecked")
     public HashTable() {
         table = new HashNode[PREDEFINED_SIZE];
         size = 0;
@@ -57,12 +58,29 @@ public class HashTable<K, V extends Comparable<V>> implements Hash<K, V> {
 
     @Override
     public boolean containsKey(K key) {
-        return false;
+       int index = hashFunction(key);
+       HashNode<K,V> indexList = table[index];
+
+       return table[index].containsKey(indexList, key);
     }
 
     @Override
     public boolean containsValue(V value) {
-        return false;
+        boolean flag = false;
+
+        for (int i = 0; i < table.length; i++) {
+            HashNode<K,V> currentNode = table[i];
+
+            while (currentNode != null) {
+                if (currentNode.getValue().equals(value)) {
+                    flag = true;
+                }
+
+                currentNode = currentNode.getNext();
+            }
+        }
+
+        return flag;
     }
 
     @Override

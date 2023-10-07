@@ -2,11 +2,8 @@ package tests;
 
 import model.classes.Task;
 import model.structures.HashTable;
-import org.junit.Assert;
 import org.junit.Test;
-
 import java.util.Calendar;
-
 import static org.junit.Assert.*;
 
 public class HashTableTest {
@@ -44,7 +41,7 @@ public class HashTableTest {
 
     @Test
     public void testGetValue() {
-        scenario2();
+        scenario1();
 
         Task task1 = new Task("Tarea Integradora I", "Quiero dormiiiiiir!", Calendar.getInstance(), 1);
         Task task2 = new Task("Tarea Integradora II", "Quiero dormir x2", Calendar.getInstance(), 2);
@@ -60,5 +57,31 @@ public class HashTableTest {
         assertEquals(task2, taskList.getValue(task2.getTitle(), task2));
         assertNotNull(task3);
         assertEquals(task3, taskList.getValue(task3.getTitle(), task3));
+    }
+
+    @Test
+    public void testContainsKey() {
+        scenario2();
+
+        assertTrue(taskList.containsKey("Tarea Integradora I"));
+        assertTrue(taskList.containsKey("Tarea Integradora II"));
+        assertTrue(taskList.containsKey("Tarea Integradora II"));
+    }
+
+    @Test
+    public void testContainsValue() {
+        scenario1();
+
+        Task task1 = new Task("Tarea Integradora I", "Quiero dormiiiiiir!", Calendar.getInstance(), 1);
+        Task task2 = new Task("Tarea Integradora II", "Quiero dormir x2", Calendar.getInstance(), 2);
+        Task task3 = new Task("Tarea Integradora III" , "Quiero dormir x3", Calendar.getInstance(), 3);
+
+        taskList.put(task1.getTitle(), task1);
+        taskList.put(task2.getTitle(), task2);
+        taskList.put(task3.getTitle(), task3);
+
+        assertTrue(taskList.containsValue(task1));
+        assertTrue(taskList.containsValue(task2));
+        assertTrue(taskList.containsValue(task3));
     }
 }
