@@ -22,31 +22,27 @@ public class HashNode<K, V extends Comparable<V>> extends Node<V> {
         return key;
     }
 
-    public void setKey(K key) {
-        this.key = key;
-    }
-
     public V getValue() {
         return value;
-    }
-
-    public void setValue(V value) {
-        this.value = value;
-    }
-
-    public int getSize() {
-        return size;
     }
 
     public void add(Node<V> newNode) {
         if (next == null) {
             next = newNode;
+            size++;
         } else {
             ((HashNode<K,V>)next).add(newNode);
         }
     }
 
-    public void removeNode() {}
+    public void removeNode() {
+        if (((HashNode<K,V>)next).getNext() == null) {
+            next = null;
+            size--;
+        } else {
+            ((HashNode<?, ?>) next).removeNode();
+        }
+    }
 
     public V getNode(V value) {
         if (next != null) {
@@ -68,9 +64,7 @@ public class HashNode<K, V extends Comparable<V>> extends Node<V> {
     public boolean containsKey(HashNode<K,V> node, K key) {
         boolean flag = false;
 
-        if (node == null) {
-            flag = false;
-        } else if (node.getKey().equals(key)) {
+        if (node.getKey().equals(key)) {
             flag = true;
         } else {
             containsKey(node.getNext(), key);

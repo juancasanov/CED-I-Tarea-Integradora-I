@@ -1,5 +1,7 @@
 package model.structures;
 
+import exceptions.HashTableIsEmptyException;
+import exceptions.NonExistentKeyException;
 import model.nodes.HashNode;
 import model.templates.Hash;
 
@@ -49,7 +51,24 @@ public class HashTable<K, V extends Comparable<V>> implements Hash<K, V> {
     }
 
     @Override
-    public void remove(K key, V value) {}
+    public void remove(K key, V value) throws HashTableIsEmptyException, NonExistentKeyException {
+        int index = hashFunction(key);
+
+        if (isEmpty()) {
+            throw new HashTableIsEmptyException("");
+        } else {
+            if (table[index] == null) {
+                throw new NonExistentKeyException("");
+            } else {
+                if (table[index].getNext() == null) {
+                    table[index] = null;
+                    size--;
+                } else {
+                    table[index].removeNode();
+                }
+            }
+        }
+    }
 
     @Override
     public int size() {

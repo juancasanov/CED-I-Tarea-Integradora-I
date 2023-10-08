@@ -14,7 +14,7 @@ public class HashTableTest {
         taskList = new HashTable<>();
     }
 
-    private void scenario2() {
+    private Task[] scenario2() {
         taskList = new HashTable<>();
 
         Task task1 = new Task("Tarea Integradora I", "Quiero dormiiiiiir!", Calendar.getInstance(), 1);
@@ -24,6 +24,8 @@ public class HashTableTest {
         taskList.put(task1.getTitle(), task1);
         taskList.put(task2.getTitle(), task2);
         taskList.put(task3.getTitle(), task3);
+
+        return new Task[]{task1, task2, task3};
     }
 
     @Test
@@ -83,5 +85,18 @@ public class HashTableTest {
         assertTrue(taskList.containsValue(task1));
         assertTrue(taskList.containsValue(task2));
         assertTrue(taskList.containsValue(task3));
+    }
+
+    @Test
+    public void testRemove() {
+        Task[] tasks = scenario2();
+
+        taskList.remove("Tarea Integradora I", tasks[0]);
+        taskList.remove("Tarea Integradora II", tasks[1]);
+        taskList.remove("Tarea Integradora III", tasks[2]);
+
+        assertNull(taskList.getValue("Tarea Integradora I", tasks[0]));
+        assertNull(taskList.getValue("Tarea Integradora II", tasks[1]));
+        assertNull(taskList.getValue("Tarea Integradora III", tasks[2]));
     }
 }
