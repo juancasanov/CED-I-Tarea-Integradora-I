@@ -117,4 +117,14 @@ public class HashTable<K, V extends Comparable<V>> implements Hash<K, V> {
 
         return found;
     }
+
+    public void printHashTable() {
+        for (int i = 0; i < table.length-1; i++) {
+            HashNode<K,V> currentNode = table[i];
+            while (currentNode != null) {
+                System.out.println("Key: " + currentNode.getKey() + ", Value: " + currentNode.getValue());
+                currentNode = currentNode.getNext();
+            }
+        }
+    }
 }

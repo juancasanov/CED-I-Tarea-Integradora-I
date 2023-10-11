@@ -1,8 +1,12 @@
 package ui;
 
 import model.Controller;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Scanner;
+import java.text.ParseException;
+import model.structures.HashTable;
+import model.classes.Task;
 
 public class Main {
 
@@ -29,7 +33,7 @@ public class Main {
                 addTask();
                 break;
             case 2:
-                
+                displayTasks();
                 break;
             case 3:
                 // Logic to undo
@@ -48,7 +52,7 @@ public class Main {
         while (true) {
             showMenu();
             int option = reader.nextInt();
-            reader.nextLine();  // Clear the scanner buffer
+            reader.nextLine();
             executeOption(option);
         }
     }
@@ -74,10 +78,13 @@ public class Main {
             return;
         }
 
-        System.out.print("Enter task priority (1-5): ");
+        System.out.print("Enter task priority (1-2): ");
         int priority = reader.nextInt();
         reader.nextLine();  // Clear the scanner buffer
         controller.addTask(title, description, deadline, priority);
         System.out.println("Task added successfully!");
+    }
+    private void displayTasks() {
+        controller.getTasks().printHashTable();
     }
 }
