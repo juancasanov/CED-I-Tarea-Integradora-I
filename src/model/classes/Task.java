@@ -52,4 +52,9 @@ public class Task implements Comparable<Task> {
     public int compareTo(Task task){
         return priority - task.getPriority();
     }
+
+    @Override
+    public String toString(){
+        return "\nDescription: " + description + "\nDeadline: " + deadline.getTime() + "\nPriority: " + priority;
+    }
 }

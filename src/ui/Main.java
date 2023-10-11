@@ -1,3 +1,7 @@
+/**
+ * The Main class is a user interface that allows users to add tasks, display tasks, undo actions, and
+ * exit the program.
+ */
 package ui;
 
 import model.Controller;
@@ -22,8 +26,9 @@ public class Main {
         System.out.println("Menu:");
         System.out.println("1. Add Task");
         System.out.println("2. Show Tasks");
-        System.out.println("3. Undo");
-        System.out.println("4. Exit");
+        System.out.println("3. Remove Tasks");
+        System.out.println("4. Undo");
+        System.out.println("5. Exit");
         System.out.print("Select an option: ");
     }
 
@@ -36,9 +41,12 @@ public class Main {
                 displayTasks();
                 break;
             case 3:
-                // Logic to undo
+                removeTasks();
                 break;
             case 4:
+                System.out.println("Undoing last action...");
+                break;
+            case 5:
                 System.out.println("Exiting the program...");
                 System.exit(0);
                 break;
@@ -78,7 +86,7 @@ public class Main {
             return;
         }
 
-        System.out.print("Enter task priority (1-2): ");
+        System.out.print("Enter task priority (1-5): ");
         int priority = reader.nextInt();
         reader.nextLine();  // Clear the scanner buffer
         controller.addTask(title, description, deadline, priority);
@@ -86,5 +94,13 @@ public class Main {
     }
     private void displayTasks() {
         controller.getTasks().printHashTable();
+    }
+
+    public void removeTasks() {
+
+        System.out.println("Write the task you want to remove:");
+        String title = reader.nextLine();
+        controller.removeTask(title);
+        System.out.println("The task was removed successfully!");
     }
 }

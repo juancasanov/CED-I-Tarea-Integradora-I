@@ -26,4 +26,8 @@ public class Controller{
     public HashTable<String,Task> getTasks(){
         return tasks;
     }
+
+    public void removeTask(String title){
+        tasks.remove(title);
+    }
 }
