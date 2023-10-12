@@ -91,12 +91,12 @@ public class HashTableTest {
     public void testRemove() {
         Task[] tasks = scenario2();
 
-        taskList.remove("Tarea Integradora I", tasks[0]);
-        taskList.remove("Tarea Integradora II", tasks[1]);
-        taskList.remove("Tarea Integradora III", tasks[2]);
+        taskList.remove("Tarea Integradora I");
+        taskList.remove("Tarea Integradora II");
+        taskList.remove("Tarea Integradora III");
 
-        assertNull(taskList.getValue("Tarea Integradora I", tasks[0]));
-        assertNull(taskList.getValue("Tarea Integradora II", tasks[1]));
-        assertNull(taskList.getValue("Tarea Integradora III", tasks[2]));
+        assertNull(taskList.getValue("Tarea Integradora I"));
+        assertNull(taskList.getValue("Tarea Integradora II"));
+        assertNull(taskList.getValue("Tarea Integradora III"));
     }
 }

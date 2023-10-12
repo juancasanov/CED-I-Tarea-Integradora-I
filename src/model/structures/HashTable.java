@@ -51,7 +51,7 @@ public class HashTable<K, V extends Comparable<V>> implements Hash<K, V> {
     }
 
     @Override
-    public void remove(K key, V value) throws HashTableIsEmptyException, NonExistentKeyException {
+    public void remove(K key) throws HashTableIsEmptyException, NonExistentKeyException {
         int index = hashFunction(key);
 
         if (isEmpty()) {
@@ -103,7 +103,7 @@ public class HashTable<K, V extends Comparable<V>> implements Hash<K, V> {
     }
 
     @Override
-    public V getValue(K key, V value) {
+    public V getValue(K key) {
         int index = hashFunction(key);
         V found = null;
 
@@ -117,4 +117,15 @@ public class HashTable<K, V extends Comparable<V>> implements Hash<K, V> {
 
         return found;
     }
+
+    public void printHashTable() {
+        for (int i = 0; i < table.length-1; i++) {
+            HashNode<K,V> currentNode = table[i];
+            while (currentNode != null) {
+                System.out.println("Title: " + currentNode.getKey() + currentNode.getValue()+ "\n");
+                currentNode = currentNode.getNext();
+            }
+        }
+    }
+
 }
