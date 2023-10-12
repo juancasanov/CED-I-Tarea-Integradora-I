@@ -1,10 +1,10 @@
 package model;
 
 import model.classes.Task;
+import model.structures.PriorityQueue;
 import model.templates.List;
 import model.structures.HashTable;
 import model.structures.Queue;
-import model.templates.Hash;
 
 import java.util.Calendar;
 import exceptions.HashTableIsEmptyException;
@@ -13,12 +13,24 @@ import exceptions.NonExistentKeyException;
 public class Controller{
 
     private HashTable<String,Task> tasks;
+    private List<Task> nonPriorityTasks;
+    private List<Task> priorityTasks;
     public Controller(){
         tasks = new HashTable<String,Task>();
+        nonPriorityTasks = new Queue<Task>();
+        priorityTasks = new PriorityQueue<Task>();
     }
 
     public void addTask(String title, String description, Calendar deadline, int priority){
-        tasks.put(title,new Task(title,description,deadline,priority));
+        Task temp = new Task(title,description,deadline,priority);
+        tasks.put(title,temp);
+        switch(priority) {
+            case 0:
+                nonPriorityTasks.add(temp);
+                break;
+            default :
+                priorityTasks.add(temp);
+        }
     }
 
     public void displayTasks(){
