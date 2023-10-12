@@ -86,9 +86,17 @@ public class Main {
             return;
         }
 
-        System.out.print("Enter task priority (1-5): ");
-        int priority = reader.nextInt();
-        reader.nextLine();  // Clear the scanner buffer
+        System.out.println("Enter the priority of the task 1. Priority 2. Non priority:");
+        
+        int isPriority = reader.nextInt();
+        int priority = 0;
+
+        if (isPriority == 1) {
+            System.out.println("Enter priority of the task (1-5) 1. Highest 5. Lowest");
+            priority = reader.nextInt();
+            reader.nextLine(); // Clear the scanner buffer
+        }
+
         controller.addTask(title, description, deadline, priority);
         System.out.println("Task added successfully!");
     }
@@ -100,7 +108,7 @@ public class Main {
 
         System.out.println("Write the task you want to remove:");
         String title = reader.nextLine();
-        controller.removeTask(title);
-        System.out.println("The task was removed successfully!");
+        System.out.println(controller.removeTask(title));
+        //System.out.println("The task was removed successfully!");
     }
 }

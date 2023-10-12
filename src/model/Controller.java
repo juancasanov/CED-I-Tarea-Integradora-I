@@ -7,6 +7,8 @@ import model.structures.Queue;
 import model.templates.Hash;
 
 import java.util.Calendar;
+import exceptions.HashTableIsEmptyException;
+import exceptions.NonExistentKeyException;
 
 public class Controller{
 
@@ -27,7 +29,15 @@ public class Controller{
         return tasks;
     }
 
-    public void removeTask(String title){
-        tasks.remove(title);
-    }
+        public String removeTask(String title){
+            String message = "The task was removed successfully!";
+            try{
+                tasks.remove(title);
+            }catch(HashTableIsEmptyException e){
+                message = e.getMessage();
+            }catch(NonExistentKeyException e1){
+                message = e1.getMessage();
+            }
+            return message;
+        }                
 }
