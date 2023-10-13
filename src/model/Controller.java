@@ -41,6 +41,40 @@ public class Controller{
         return tasks;
     }
 
+    public String modifyTask(String title, String newTitle, String description, Calendar deadline, int priority) {
+        String message = "The task was modified successfully!";
+        try {
+            if (tasks.isEmpty()) {
+                throw new HashTableIsEmptyException("The task list is empty.");
+            }
+            
+            if (!tasks.containsKey(title)) {
+                throw new NonExistentKeyException("Task with title '" + title + "' does not exist.");
+            }
+            
+            Task oldTask = tasks.getValue(title);
+            tasks.remove(title);
+            Task newTask = new Task(newTitle, description, deadline, priority);
+            tasks.put(newTitle, newTask);
+            
+            // Update priority/non-priority task lists
+            if (oldTask.getPriority() == 0) {
+                //nonPriorityTasks.remove(oldTask);
+                nonPriorityTasks.add(newTask);
+            } else {
+                //priorityTasks.remove(oldTask);
+                priorityTasks.add(newTask);
+            }
+        } catch (HashTableIsEmptyException e) {
+            message = e.getMessage();
+        } catch (NonExistentKeyException e1) {
+            message = e1.getMessage();
+        }
+        return message;
+    }
+    
+
+
     public String removeTask(String title){
         String message = "The task was removed successfully!";
         try{
@@ -52,4 +86,6 @@ public class Controller{
         }
         return message;
     }
+
+
 }
