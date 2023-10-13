@@ -109,7 +109,7 @@ public class HashTable<K, V extends Comparable<V>> implements Hash<K, V> {
 
         HashNode<K, V> current = table[index];
         while (current != null) {
-            if (current.getKey() != null && current.getKey().equals(key) && current.getValue() != null && current.getValue().equals(value)) {
+            if (current.getKey() != null && current.getKey().equals(key) && current.getValue() != null) {
                 found = current.getValue();
             }
             current = current.getNext();

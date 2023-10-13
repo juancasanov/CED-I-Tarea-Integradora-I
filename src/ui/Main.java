@@ -101,7 +101,7 @@ public class Main {
         System.out.println("Task added successfully!");
     }
     private void displayTasks() {
-        controller.getTasks().printHashTable();
+        controller.displayTasks();
     }
 
     public void removeTasks() {

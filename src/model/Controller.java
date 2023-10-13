@@ -41,15 +41,15 @@ public class Controller{
         return tasks;
     }
 
-        public String removeTask(String title){
-            String message = "The task was removed successfully!";
-            try{
-                tasks.remove(title);
-            }catch(HashTableIsEmptyException e){
-                message = e.getMessage();
-            }catch(NonExistentKeyException e1){
-                message = e1.getMessage();
-            }
-            return message;
-        }                
+    public String removeTask(String title){
+        String message = "The task was removed successfully!";
+        try{
+            tasks.remove(title);
+        }catch(HashTableIsEmptyException e){
+            message = e.getMessage();
+        }catch(NonExistentKeyException e1){
+            message = e1.getMessage();
+        }
+        return message;
+    }
 }
