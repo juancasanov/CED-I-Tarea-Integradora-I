@@ -1,5 +1,6 @@
 package model.structures;
 
+import model.nodes.NodePriorityQueue;
 import model.nodes.NodeQueue;
 import model.templates.List;
 import exceptions.QueueIsEmptyException;
@@ -70,5 +71,22 @@ public class Queue<T extends Comparable<T>> implements List<T> {
         T temp = top.getT();
         top = (NodeQueue<T>) top.getNext();
         return temp;
+    }
+    @Override
+    public void remove (T t) {
+        if (top == null) {
+            return;
+        }
+        if (top.getT().equals(t)) {
+            top = (NodeQueue<T>)top.getNext();
+            return;
+        }
+        NodeQueue<T> current = top;
+        while (current.getNext() != null && !current.getNext().getT().equals(t)) {
+            current = (NodeQueue<T>)current.getNext();
+        }
+        if (current.getNext() != null) {
+            current.setNext(current.getNext().getNext());
+        }
     }
 }

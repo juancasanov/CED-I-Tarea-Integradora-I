@@ -61,6 +61,39 @@ public class PriorityQueue<T extends Comparable<T>> implements List<T> {
         }
         return head.getT();
     }
-}
 
+    public void insert(T t) {
+        NodePriorityQueue<T> newNode = new NodePriorityQueue<>(t);
+        if (head == null || t.compareTo(head.getT()) < 0) {
+            newNode.setNext(head);
+            head = newNode;
+        } else {
+            NodePriorityQueue<T> current = head;
+            while (current.getNext() != null && t.compareTo(current.getNext().getT()) >= 0) {
+                current = current.getNext();
+            }
+            newNode.setNext(current.getNext());
+            current.setNext(newNode);
+        }
+    }
+
+    @Override
+    public void remove (T t) {
+        if (head == null) {
+            return;
+        }
+        if (head.getT().equals(t)) {
+            head = head.getNext();
+            return;
+        }
+        NodePriorityQueue<T> current = head;
+        while (current.getNext() != null && !current.getNext().getT().equals(t)) {
+            current = current.getNext();
+        }
+        if (current.getNext() != null) {
+            current.setNext(current.getNext().getNext());
+        }
+    }
+
+}
 
