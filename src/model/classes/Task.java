@@ -2,7 +2,7 @@ package model.classes;
 
 import java.util.Calendar;
 
-public class Task implements Comparable<Task> {
+public class Task implements Comparable<Task>, Cloneable {
 
     private String title;
     private String description;
@@ -62,5 +62,23 @@ public class Task implements Comparable<Task> {
     @Override
     public String toString(){
         return "\nDescription: " + description + "\nDeadline: " + deadline.getTime() + "\nPriority: " + priority;
+    }
+
+    @Override
+    public Object clone() {
+        try {
+            // Llama al método clone de la clase Object para obtener una copia superficial.
+            Task clonedTask = (Task) super.clone();
+
+            // Realiza una copia profunda del campo "deadline" (Calendar).
+            if (this.deadline != null) {
+                clonedTask.deadline = (Calendar) this.deadline.clone();
+            }
+
+            return clonedTask;
+        } catch (CloneNotSupportedException e) {
+            // Esta excepción no debería ocurrir, ya que Task implementa Cloneable.
+            throw new AssertionError();
+        }
     }
 }

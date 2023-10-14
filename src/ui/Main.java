@@ -50,6 +50,7 @@ public class Main {
                 break;
             case 5:
                 System.out.println("Undoing last action...");
+                controller.undoAction();
                 break;
             case 6:
                 System.out.println("Exiting the program...");

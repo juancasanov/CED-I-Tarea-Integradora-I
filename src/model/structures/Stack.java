@@ -30,10 +30,10 @@ public class Stack<T extends Comparable<T>> implements IList<T> {
         }
     }
 
-    public boolean push(T t,String action,T s){
-        add(t);
+    public boolean push(T before,String action,T after){
+        add(before);
         top.setAction(action);
-        top.setS(s);
+        top.setS(after);
         return true;
     }
     @Override
@@ -62,6 +62,26 @@ public class Stack<T extends Comparable<T>> implements IList<T> {
             NodeStack<T> temp = top;
             top = (NodeStack<T>) top.getNext();
             return temp.getT();
+        }
+    }
+
+    public NodeStack<T> pop(int flag){
+        NodeStack<T> toReturn;
+        try{
+            toReturn = remove(flag);
+        }catch(StackIsEmptyException e){
+            toReturn = null;
+        }
+        return toReturn;
+    }
+
+    public NodeStack<T> remove(int flag) throws StackIsEmptyException{
+        if(isEmpty()){
+            throw new StackIsEmptyException("The stack has no values.");
+        }else{
+            NodeStack<T> temp = top;
+            top = (NodeStack<T>) top.getNext();
+            return temp;
         }
     }
 
