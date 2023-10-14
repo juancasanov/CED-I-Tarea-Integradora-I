@@ -1,6 +1,7 @@
 package model.structures;
 import exceptions.QueueIsEmptyException;
 import model.templates.IList;
+import model.classes.Task;
 import model.nodes.NodePriorityQueue;
 
 
@@ -36,9 +37,40 @@ public class PriorityQueue<T extends Comparable<T>> implements IList<T> {
                 current.setNext(newNode);
             }
         }
-    
+        
         return added;
     }
+
+    public void sort(PriorityQueue<T> tasks) {
+        NodePriorityQueue<T> sorted = null;
+        NodePriorityQueue<T> current = head;
+        
+        while (current != null) {
+            NodePriorityQueue<T> next = current.getNext();
+            sorted = insertByPriority(sorted, current);
+            current = next;
+        }
+        
+        // Update head to point to the sorted list
+        head = sorted;
+    }
+    
+    private NodePriorityQueue<T> insertByPriority(NodePriorityQueue<T> sorted, NodePriorityQueue<T> newNode) {
+        if (sorted == null || newNode.getT().compareTo(sorted.getT()) < 0) {
+            newNode.setNext(sorted);
+            return newNode;
+        } else {
+            NodePriorityQueue<T> current = sorted;
+            while (current.getNext() != null && newNode.getT().compareTo(current.getNext().getT()) >= 0) {
+                current = current.getNext();
+            }
+            newNode.setNext(current.getNext());
+            current.setNext(newNode);
+            return sorted;
+        }
+    }
+    
+    
     
 
     @Override
@@ -62,21 +94,6 @@ public class PriorityQueue<T extends Comparable<T>> implements IList<T> {
             throw new QueueIsEmptyException("The queue has no values");
         }
         return head.getT();
-    }
-
-    public void insert(T t) {
-        NodePriorityQueue<T> newNode = new NodePriorityQueue<>(t);
-        if (head == null || t.compareTo(head.getT()) < 0) {
-            newNode.setNext(head);
-            head = newNode;
-        } else {
-            NodePriorityQueue<T> current = head;
-            while (current.getNext() != null && t.compareTo(current.getNext().getT()) >= 0) {
-                current = current.getNext();
-            }
-            newNode.setNext(current.getNext());
-            current.setNext(newNode);
-        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package model;
 
 import model.classes.Task;
+import model.nodes.NodePriorityQueue;
 import model.nodes.NodeStack;
 import model.structures.PriorityQueue;
 import model.structures.Stack;
@@ -20,12 +21,13 @@ public class Controller{
     public Controller(){
         tasks = new HashTable<String,Task>();
         nonPriorityTasks = new Queue<Task>();
-        priorityTasks = new PriorityQueue<Task>();
+        priorityTasks= new PriorityQueue<Task>();
         actions = new Stack<Task>();
     }
 
     public void addTask(String title, String description, Calendar deadline, int priority){
         Task temp = new Task(title,description,deadline,priority);
+        PriorityQueue<Task> priorityQueue = new PriorityQueue<Task>();        
         tasks.put(title,temp);
         switch(priority) {
             case 0:
@@ -35,6 +37,7 @@ public class Controller{
                 priorityTasks.add(temp);
         }
         actions.push(null,"added",(Task)temp.clone());
+        priorityQueue.sort(priorityTasks);
     }
 
     public void displayTasks(){
@@ -49,6 +52,7 @@ public class Controller{
         String message = "The task was modified successfully!";
         Task oldTask = null;
         Task newTask = null;
+        PriorityQueue<Task> priorityQueue = new PriorityQueue<Task>();         
         try {
             if (tasks.isEmpty()) {
                 System.out.println(tasks.size());
@@ -94,10 +98,12 @@ public class Controller{
             message = e1.getMessage();
         }
         actions.push(oldTask,"modified",newTask);
+        priorityQueue.sort(priorityTasks);
         return message;
     }
     
     public String removeTask(String title){
+        PriorityQueue<Task> priorityQueue = new PriorityQueue<Task>(); 
         String message = "The task was removed successfully!";
         try{
             tasks.remove(title);
@@ -109,11 +115,13 @@ public class Controller{
             message = e1.getMessage();
             actions.push(null,"removed",null);
         }
+        priorityQueue.sort(priorityTasks);
         return message;
     }
 
     public void undoAction(){
         NodeStack<Task> action = actions.pop(0);
+        PriorityQueue<Task> priorityQueue = new PriorityQueue<Task>(); 
         if(action!=null){
             switch (action.getAction()){
                 case "added":
@@ -150,6 +158,7 @@ public class Controller{
                     break;
             }
         }
+        priorityQueue.sort(priorityTasks);
     }
 
 
