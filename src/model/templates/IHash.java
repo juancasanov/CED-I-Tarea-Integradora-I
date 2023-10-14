@@ -1,6 +1,6 @@
 package model.templates;
 
-public interface Hash<K, V extends Comparable<V>> {
+public interface IHash<K, V extends Comparable<V>> {
     public boolean containsKey(K key);
     public boolean containsValue(V value);
     public V getValue(K key);

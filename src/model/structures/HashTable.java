@@ -3,9 +3,9 @@ package model.structures;
 import exceptions.HashTableIsEmptyException;
 import exceptions.NonExistentKeyException;
 import model.nodes.HashNode;
-import model.templates.Hash;
+import model.templates.IHash;
 
-public class HashTable<K, V extends Comparable<V>> implements Hash<K, V> {
+public class HashTable<K, V extends Comparable<V>> implements IHash<K, V> {
 
     private static final int PREDEFINED_SIZE = 97;
     private HashNode<K,V>[] table;

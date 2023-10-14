@@ -5,21 +5,22 @@
 package ui;
 
 import model.Controller;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Scanner;
 import java.text.ParseException;
-import model.structures.HashTable;
-import model.classes.Task;
 
 public class Main {
 
     private Controller controller;
-    private Scanner reader;
+    private BufferedReader reader;
 
     public Main() {
         controller = new Controller();
-        reader = new Scanner(System.in);
+        reader = new BufferedReader(new InputStreamReader(System.in));
     }
 
     public void showMenu() {
@@ -63,8 +64,7 @@ public class Main {
     public void start() {
         while (true) {
             showMenu();
-            int option = reader.nextInt();
-            reader.nextLine();
+            int option = validateIntegerInput();
             executeOption(option);
         }
     }
@@ -76,11 +76,11 @@ public class Main {
 
     private void addTask() {
         System.out.print("Enter task title: ");
-        String title = reader.nextLine();
+        String title = getStringInput();
         System.out.print("Enter description of the task: ");
-        String description = reader.nextLine();
+        String description = getStringInput();
         System.out.print("Enter task due date (yyyy-mm-dd): ");
-        String dueDateString = reader.nextLine();
+        String dueDateString = getStringInput();
         Calendar deadline = Calendar.getInstance();
 
         try {
@@ -91,15 +91,22 @@ public class Main {
             return;
         }
 
+        int isPriority;
         System.out.println("Enter the priority of the task 1. Priority 2. Non priority:");
-        
-        int isPriority = reader.nextInt();
+        isPriority = validateIntegerInput();
+        if(isPriority!=1 && isPriority!=2){
+            System.out.println("The option typed is incorrect, Task was not created");
+            return;
+        }
         int priority = 0;
 
         if (isPriority == 1) {
             System.out.println("Enter priority of the task (1-5) 1. Highest 5. Lowest");
-            priority = reader.nextInt();
-            reader.nextLine(); // Clear the scanner buffer
+            priority = validateIntegerInput();
+            if(priority<1 || priority>5){
+                System.out.println("The priority typed is incorrect, Task was not created");
+                return;
+            }
         }
 
         controller.addTask(title, description, deadline, priority);
@@ -116,39 +123,42 @@ public class Main {
         int newPriority = 0;
         Calendar deadline = Calendar.getInstance();
         System.out.println("Enter the title of the task to modify:");
-        String title = reader.nextLine();  
+        String title = getStringInput();
         //reader.nextLine();
 
         System.out.println("Which attribute do you want to modify? (1. Title, 2. Description, 3. Deadline, 4. Priority)");
-        int option = reader.nextInt();
+        int option = validateIntegerInput();
+        if(option==-1){
+            System.out.println("Option typed was incorrect, Task will not be modified");
+            return;
+        }
 
         switch(option){
             case 1:
-                reader.nextLine();
                 System.out.println("Enter the new title:");
-                newTitle = reader.nextLine();
+                newTitle = getStringInput();
                 break;
             case 2:
-                reader.nextLine();
                 System.out.println("Enter the new description:");
-                newDescription = reader.nextLine();
+                newDescription = getStringInput();
                 break;
             case 3:
-                reader.nextLine();
                 System.out.println("Enter the new deadline:");
-                newDeadline = reader.nextLine();
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                deadline.setTime(sdf.parse(newDeadline));
-            } catch (ParseException e) {
-                System.out.println("Invalid date format. Task not added.");
-                return;
-        }
+                newDeadline = getStringInput();
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    deadline.setTime(sdf.parse(newDeadline));
+                } catch (ParseException e) {
+                    System.out.println("Invalid date format. Task not added.");
+                    return;
+                }
                 break;
             case 4:
-                reader.nextLine();
                 System.out.println("Enter the new priority:");
-                newPriority = reader.nextInt();
+                newPriority = validateIntegerInput();
+                if(newPriority<0 || newPriority>5){
+                    System.out.println("The priority typed was incorrect, Task will not be modified");
+                }
                 break;
             default:
                 System.out.println("Invalid option. Please select a valid option.");
@@ -159,8 +169,43 @@ public class Main {
     public void removeTasks() {
 
         System.out.println("Write the task you want to remove:");
-        String title = reader.nextLine();
+        String title = getStringInput();
         System.out.println(controller.removeTask(title));
         //System.out.println("The task was removed successfully!");
+    }
+
+    private int validateIntegerInput() {
+        int input = -1;
+        try {
+            String read = reader.readLine();
+
+            if(isInteger(read)){
+                input = Integer.parseInt(read);
+            }
+            reader = new BufferedReader(new InputStreamReader(System.in));
+        } catch (IOException e) {
+            reader = new BufferedReader(new InputStreamReader(System.in));
+        }
+        return input;
+    }
+
+    public static boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private String getStringInput(){
+        String input = "";
+        try{
+            input = reader.readLine();
+            reader = new BufferedReader(new InputStreamReader(System.in));
+        }catch(IOException e){
+            reader = new BufferedReader(new InputStreamReader(System.in));
+        }
+        return input;
     }
 }

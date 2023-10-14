@@ -2,7 +2,7 @@ package model;
 
 import model.classes.Task;
 import model.structures.PriorityQueue;
-import model.templates.List;
+import model.templates.IList;
 import model.structures.HashTable;
 import model.structures.Queue;
 
@@ -13,8 +13,8 @@ import exceptions.NonExistentKeyException;
 public class Controller{
 
     private HashTable<String,Task> tasks;
-    private List<Task> nonPriorityTasks;
-    private List<Task> priorityTasks;
+    private IList<Task> nonPriorityTasks;
+    private IList<Task> priorityTasks;
     public Controller(){
         tasks = new HashTable<String,Task>();
         nonPriorityTasks = new Queue<Task>();

@@ -1,10 +1,10 @@
 package model.structures;
 import exceptions.QueueIsEmptyException;
-import model.templates.List;
+import model.templates.IList;
 import model.nodes.NodePriorityQueue;
 
 
-public class PriorityQueue<T extends Comparable<T>> implements List<T> {
+public class PriorityQueue<T extends Comparable<T>> implements IList<T> {
     private NodePriorityQueue<T> head;
 
     @Override
@@ -22,7 +22,9 @@ public class PriorityQueue<T extends Comparable<T>> implements List<T> {
         }
     
         if (added) { // Añadir el elemento solo si added es true
-            if (head == null || t.compareTo(head.getT()) < 0) {
+            if (head == null){
+                head = newNode;
+            }else if(t.compareTo(head.getT()) < 0) {
                 newNode.setT(head.getT());
                 head = newNode;
             } else {    

@@ -2,9 +2,9 @@ package model.structures;
 
 import exceptions.StackIsEmptyException;
 import model.nodes.NodeStack;
-import model.templates.List;
+import model.templates.IList;
 
-public class Stack<T extends Comparable<T>> implements List<T> {
+public class Stack<T extends Comparable<T>> implements IList<T> {
 
     private NodeStack<T> top;
 
@@ -30,6 +30,12 @@ public class Stack<T extends Comparable<T>> implements List<T> {
         }
     }
 
+    public boolean push(T t,String action,T s){
+        add(t);
+        top.setAction(action);
+        top.setS(s);
+        return true;
+    }
     @Override
     public boolean add(T t){
         NodeStack<T> temp = new NodeStack<>(t);
@@ -53,9 +59,27 @@ public class Stack<T extends Comparable<T>> implements List<T> {
         if(isEmpty()){
             throw new StackIsEmptyException("The stack has no values.");
         }else{
-            T temp = top.getT();
+            NodeStack<T> temp = top;
             top = (NodeStack<T>) top.getNext();
-            return temp;
+            return temp.getT();
+        }
+    }
+
+    @Override
+    public void remove (T t) {
+        if (top == null) {
+            return;
+        }
+        if (top.getT().equals(t)) {
+            top = (NodeStack<T>)top.getNext();
+            return;
+        }
+        NodeStack<T> current = top;
+        while (current.getNext() != null && !current.getNext().getT().equals(t)) {
+            current = (NodeStack<T>) current.getNext();
+        }
+        if (current.getNext() != null) {
+            current.setNext(current.getNext().getNext());
         }
     }
 

@@ -1,11 +1,10 @@
 package model.structures;
 
-import model.nodes.NodePriorityQueue;
 import model.nodes.NodeQueue;
-import model.templates.List;
+import model.templates.IList;
 import exceptions.QueueIsEmptyException;
 
-public class Queue<T extends Comparable<T>> implements List<T> {
+public class Queue<T extends Comparable<T>> implements IList<T> {
     private NodeQueue<T> top;
 
     private NodeQueue<T> bottom;
