@@ -106,8 +106,8 @@ public class Controller{
         PriorityQueue<Task> priorityQueue = new PriorityQueue<Task>(); 
         String message = "The task was removed successfully!";
         try{
+            actions.push((Task)tasks.getValue(title).clone(),"removed",null);            
             tasks.remove(title);
-            actions.push((Task)tasks.getValue(title).clone(),"removed",null);
         }catch(HashTableIsEmptyException e){
             message = e.getMessage();
             actions.push(null,"removed",null);

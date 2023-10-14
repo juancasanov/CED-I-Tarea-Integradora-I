@@ -1,6 +1,7 @@
 package model.structures;
 import exceptions.QueueIsEmptyException;
 import model.templates.IList;
+import model.templates.Node;
 import model.classes.Task;
 import model.nodes.NodePriorityQueue;
 
@@ -42,36 +43,70 @@ public class PriorityQueue<T extends Comparable<T>> implements IList<T> {
     }
 
     public void sort(PriorityQueue<T> tasks) {
-        NodePriorityQueue<T> sorted = null;
-        NodePriorityQueue<T> current = head;
-        
-        while (current != null) {
-            NodePriorityQueue<T> next = current.getNext();
-            sorted = insertByPriority(sorted, current);
-            current = next;
-        }
-        
-        // Update head to point to the sorted list
-        head = sorted;
-    }
-    
-    private NodePriorityQueue<T> insertByPriority(NodePriorityQueue<T> sorted, NodePriorityQueue<T> newNode) {
-        if (sorted == null || newNode.getT().compareTo(sorted.getT()) < 0) {
-            newNode.setNext(sorted);
-            return newNode;
-        } else {
-            NodePriorityQueue<T> current = sorted;
-            while (current.getNext() != null && newNode.getT().compareTo(current.getNext().getT()) >= 0) {
+        // Convert the priority queue to an array
+        NodePriorityQueue<T>[] arr = toArray();
+
+        // Perform Heap Sort
+        if (arr != null) {
+            int n = arr.length;
+            for (int i = n / 2 - 1; i >= 0; i--) {
+                heapify(arr, n, i);
+            }
+
+            for (int i = n - 1; i > 0; i--) {
+                // Swap the root (maximum element) with the last element
+                NodePriorityQueue<T> temp = arr[0];
+                arr[0] = arr[i];
+                arr[i] = temp;
+
+                // Heapify the reduced heap
+                heapify(arr, i, 0);
+            }
+
+            // Reconstruct the priority queue from the sorted array
+            head = arr[0];
+            NodePriorityQueue<T> current = head;
+            for (int i = 1; i < n; i++) {
+                current.setNext(arr[i]);
                 current = current.getNext();
             }
-            newNode.setNext(current.getNext());
-            current.setNext(newNode);
-            return sorted;
+            current.setNext(null);
         }
     }
-    
-    
-    
+    private void heapify(NodePriorityQueue<T>[] arr, int n, int i) {
+        int largest = i;
+        int leftChild = 2 * i + 1;
+        int rightChild = 2 * i + 2;
+
+        if (leftChild < n && arr[leftChild].getT().compareTo(arr[largest].getT()) > 0) {
+            largest = leftChild;
+        }
+
+        if (rightChild < n && arr[rightChild].getT().compareTo(arr[largest].getT()) > 0) {
+            largest = rightChild;
+        }
+
+        if (largest != i) {
+            NodePriorityQueue<T> temp = arr[i];
+            arr[i] = arr[largest];
+            arr[largest] = temp;
+            heapify(arr, n, largest);
+        }
+    }
+
+    private NodePriorityQueue<T>[] toArray() {
+        int temp = size();
+        if (temp != 0) {
+            NodePriorityQueue<T>[] arr = new NodePriorityQueue[temp];
+            NodePriorityQueue<T> current = head;
+            for (int i = 0; i < temp; i++) {
+                arr[i] = current;
+                current = current.getNext();
+            }
+            return arr;
+        }
+        return null;
+    }
 
     @Override
     public T remove() {
@@ -94,6 +129,16 @@ public class PriorityQueue<T extends Comparable<T>> implements IList<T> {
             throw new QueueIsEmptyException("The queue has no values");
         }
         return head.getT();
+    }
+
+    public int size() {
+        int size = 0;
+        NodePriorityQueue<T> current = head;
+        while (current != null) {
+            size++;
+            current = current.getNext();
+        }
+        return size;
     }
 
     @Override
