@@ -54,11 +54,11 @@ public class HashTableTest {
         taskList.put(task3.getTitle(), task3);
 
         assertNotNull(task1);
-        assertEquals(task1, taskList.getValue(task1.getTitle(), task1));
+        assertEquals(task1, taskList.getValue(task1.getTitle()));
         assertNotNull(task2);
-        assertEquals(task2, taskList.getValue(task2.getTitle(), task2));
+        assertEquals(task2, taskList.getValue(task2.getTitle()));
         assertNotNull(task3);
-        assertEquals(task3, taskList.getValue(task3.getTitle(), task3));
+        assertEquals(task3, taskList.getValue(task3.getTitle()));
     }
 
     @Test

@@ -50,7 +50,13 @@ public class Task implements Comparable<Task> {
 
     @Override
     public int compareTo(Task task){
-        return priority - task.getPriority();
+        int toReturn = 0;
+        if(deadline==task.getDeadline()){
+            toReturn = priority - task.getPriority();
+        }else{
+            toReturn = deadline.compareTo(task.getDeadline());
+        }
+        return toReturn;
     }
 
     @Override

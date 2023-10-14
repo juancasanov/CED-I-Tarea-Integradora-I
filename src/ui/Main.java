@@ -26,9 +26,10 @@ public class Main {
         System.out.println("Menu:");
         System.out.println("1. Add Task");
         System.out.println("2. Show Tasks");
-        System.out.println("3. Remove Tasks");
-        System.out.println("4. Undo");
-        System.out.println("5. Exit");
+        System.out.println("3. Modify Tasks");
+        System.out.println("4. Remove Tasks");
+        System.out.println("5. Undo");
+        System.out.println("6. Exit");
         System.out.print("Select an option: ");
     }
 
@@ -41,12 +42,15 @@ public class Main {
                 displayTasks();
                 break;
             case 3:
-                removeTasks();
+                modifyTask();
                 break;
             case 4:
-                System.out.println("Undoing last action...");
+                removeTasks();
                 break;
             case 5:
+                System.out.println("Undoing last action...");
+                break;
+            case 6:
                 System.out.println("Exiting the program...");
                 System.exit(0);
                 break;
@@ -69,6 +73,7 @@ public class Main {
         Main view = new Main();
         view.start();
     }
+
     private void addTask() {
         System.out.print("Enter task title: ");
         String title = reader.nextLine();
@@ -86,21 +91,76 @@ public class Main {
             return;
         }
 
-        System.out.print("Enter task priority (1-5): ");
-        int priority = reader.nextInt();
-        reader.nextLine();  // Clear the scanner buffer
+        System.out.println("Enter the priority of the task 1. Priority 2. Non priority:");
+        
+        int isPriority = reader.nextInt();
+        int priority = 0;
+
+        if (isPriority == 1) {
+            System.out.println("Enter priority of the task (1-5) 1. Highest 5. Lowest");
+            priority = reader.nextInt();
+            reader.nextLine(); // Clear the scanner buffer
+        }
+
         controller.addTask(title, description, deadline, priority);
         System.out.println("Task added successfully!");
     }
     private void displayTasks() {
-        controller.getTasks().printHashTable();
+        controller.displayTasks();
     }
 
+    private void modifyTask(){
+        String newTitle = "";
+        String newDescription = "";
+        String newDeadline = "";
+        int newPriority = 0;
+        Calendar deadline = Calendar.getInstance();
+        System.out.println("Enter the title of the task to modify:");
+        String title = reader.nextLine();  
+        //reader.nextLine();
+
+        System.out.println("Which attribute do you want to modify? (1. Title, 2. Description, 3. Deadline, 4. Priority)");
+        int option = reader.nextInt();
+
+        switch(option){
+            case 1:
+                reader.nextLine();
+                System.out.println("Enter the new title:");
+                newTitle = reader.nextLine();
+                break;
+            case 2:
+                reader.nextLine();
+                System.out.println("Enter the new description:");
+                newDescription = reader.nextLine();
+                break;
+            case 3:
+                reader.nextLine();
+                System.out.println("Enter the new deadline:");
+                newDeadline = reader.nextLine();
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                deadline.setTime(sdf.parse(newDeadline));
+            } catch (ParseException e) {
+                System.out.println("Invalid date format. Task not added.");
+                return;
+        }
+                break;
+            case 4:
+                reader.nextLine();
+                System.out.println("Enter the new priority:");
+                newPriority = reader.nextInt();
+                break;
+            default:
+                System.out.println("Invalid option. Please select a valid option.");
+        }
+        System.out.println(controller.modifyTask(title,newTitle,newDescription,deadline,newPriority,option));
+    }
+    
     public void removeTasks() {
 
         System.out.println("Write the task you want to remove:");
         String title = reader.nextLine();
-        controller.removeTask(title);
-        System.out.println("The task was removed successfully!");
+        System.out.println(controller.removeTask(title));
+        //System.out.println("The task was removed successfully!");
     }
 }

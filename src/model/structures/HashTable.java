@@ -55,10 +55,10 @@ public class HashTable<K, V extends Comparable<V>> implements Hash<K, V> {
         int index = hashFunction(key);
 
         if (isEmpty()) {
-            throw new HashTableIsEmptyException("");
+            throw new HashTableIsEmptyException("The hash table is Empty.");
         } else {
             if (table[index] == null) {
-                throw new NonExistentKeyException("");
+                throw new NonExistentKeyException("The task has not been found.");
             } else {
                 if (table[index].getNext() == null) {
                     table[index] = null;
@@ -109,7 +109,7 @@ public class HashTable<K, V extends Comparable<V>> implements Hash<K, V> {
 
         HashNode<K, V> current = table[index];
         while (current != null) {
-            if (current.getKey() != null && current.getKey().equals(key) && current.getValue() != null && current.getValue().equals(value)) {
+            if (current.getKey() != null && current.getKey().equals(key) && current.getValue() != null) {
                 found = current.getValue();
             }
             current = current.getNext();
