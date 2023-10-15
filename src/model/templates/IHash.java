@@ -1,5 +1,6 @@
 package model.templates;
 
+// The code is defining an interface called `IHash` with generic types `K` and `V`.
 public interface IHash<K, V extends Comparable<V>> {
     public boolean containsKey(K key);
     public boolean containsValue(V value);
