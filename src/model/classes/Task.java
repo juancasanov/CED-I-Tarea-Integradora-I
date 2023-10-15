@@ -51,10 +51,10 @@ public class Task implements Comparable<Task>, Cloneable {
     @Override
     public int compareTo(Task task){
         int toReturn = 0;
-        if(deadline==task.getDeadline()){
+        if(deadline.equals(task.getDeadline())){
             toReturn = priority - task.getPriority();
         }else{
-            toReturn = deadline.compareTo(task.getDeadline());
+            toReturn = task.getDeadline().compareTo(deadline);
         }
         return toReturn;
     }

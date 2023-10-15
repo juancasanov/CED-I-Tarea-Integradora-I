@@ -1,7 +1,7 @@
 package model;
 
+import exceptions.QueueIsEmptyException;
 import model.classes.Task;
-import model.nodes.NodePriorityQueue;
 import model.nodes.NodeStack;
 import model.structures.PriorityQueue;
 import model.structures.Stack;
@@ -27,17 +27,13 @@ public class Controller{
 
     public void addTask(String title, String description, Calendar deadline, int priority){
         Task temp = new Task(title,description,deadline,priority);
-        PriorityQueue<Task> priorityQueue = new PriorityQueue<Task>();        
         tasks.put(title,temp);
-        switch(priority) {
-            case 0:
-                nonPriorityTasks.add(temp);
-                break;
-            default :
-                priorityTasks.add(temp);
+        if (priority == 0) {
+            nonPriorityTasks.add(temp);
+        } else {
+            priorityTasks.add(temp);
         }
         actions.push(null,"added",(Task)temp.clone());
-        priorityQueue.sort(priorityTasks);
     }
 
     public void displayTasks(){
@@ -52,10 +48,8 @@ public class Controller{
         String message = "The task was modified successfully!";
         Task oldTask = null;
         Task newTask = null;
-        PriorityQueue<Task> priorityQueue = new PriorityQueue<Task>();         
         try {
             if (tasks.isEmpty()) {
-                System.out.println(tasks.size());
                 throw new HashTableIsEmptyException("The task list is empty.");
             }
             
@@ -63,7 +57,7 @@ public class Controller{
                 throw new NonExistentKeyException("Task with title '" + title + "' does not exist.");
             }
             oldTask = (Task) tasks.getValue(title).clone();
-            newTask = tasks.getValue(title);
+            newTask = (Task)tasks.getValue(title).clone();
             tasks.remove(title);
             
             switch (option) {
@@ -81,33 +75,34 @@ public class Controller{
                     break;
             }
             
-            tasks.put(newTitle, newTask);
+            tasks.put(newTask.getTitle(), newTask);
             
             // Update priority/non-priority task lists
-            if (newTask.getPriority() == 0) {
+            if (oldTask.getPriority() == 0) {
                 nonPriorityTasks.remove(oldTask);
                 nonPriorityTasks.add(newTask);
             } else {
                 priorityTasks.remove(oldTask);
                 priorityTasks.add(newTask);
             }
-            System.out.println("Old==New? : " + (oldTask==newTask));
+            //System.out.println("Old==New? : " + (oldTask==newTask));
         } catch (HashTableIsEmptyException e) {
             message = e.getMessage();
         } catch (NonExistentKeyException e1) {
             message = e1.getMessage();
         }
         actions.push(oldTask,"modified",newTask);
-        priorityQueue.sort(priorityTasks);
         return message;
     }
     
     public String removeTask(String title){
-        PriorityQueue<Task> priorityQueue = new PriorityQueue<Task>(); 
         String message = "The task was removed successfully!";
         try{
-            actions.push((Task)tasks.getValue(title).clone(),"removed",null);            
+            Task temp = tasks.getValue(title);
             tasks.remove(title);
+            actions.push((Task) temp.clone(), "removed", null);
+            priorityTasks.remove(temp);
+            nonPriorityTasks.remove(temp);
         }catch(HashTableIsEmptyException e){
             message = e.getMessage();
             actions.push(null,"removed",null);
@@ -115,13 +110,43 @@ public class Controller{
             message = e1.getMessage();
             actions.push(null,"removed",null);
         }
-        priorityQueue.sort(priorityTasks);
         return message;
+    }
+
+    public String getMessagePriorityTask(){
+        String toReturn = "";
+        toReturn = "Title: " +getPriorityTask().getTitle()+ getPriorityTask();
+        return toReturn;
+    }
+
+    public Task getPriorityTask(){
+        Task toReturn;
+        try{
+            toReturn = priorityTasks.get();
+        }catch(QueueIsEmptyException e){
+            toReturn = null;
+        }
+        return toReturn;
+    }
+
+    public String getMessageNonPriorityTask(){
+        String toReturn = "";
+        toReturn = "Title: " +getNonPriorityTask().getTitle() +getNonPriorityTask();
+        return toReturn;
+    }
+
+    public Task getNonPriorityTask(){
+        Task toReturn;
+        try{
+            toReturn = nonPriorityTasks.get();
+        }catch(QueueIsEmptyException e){
+            toReturn = null;
+        }
+        return toReturn;
     }
 
     public void undoAction(){
         NodeStack<Task> action = actions.pop(0);
-        PriorityQueue<Task> priorityQueue = new PriorityQueue<Task>(); 
         if(action!=null){
             switch (action.getAction()){
                 case "added":
@@ -158,7 +183,6 @@ public class Controller{
                     break;
             }
         }
-        priorityQueue.sort(priorityTasks);
     }
 
 

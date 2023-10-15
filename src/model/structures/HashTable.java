@@ -79,6 +79,9 @@ public class HashTable<K, V extends Comparable<V>> implements IHash<K, V> {
     public boolean containsKey(K key) {
        int index = hashFunction(key);
        HashNode<K,V> indexList = table[index];
+       if(indexList==null){
+           return false;
+       }
 
        return table[index].containsKey(indexList, key);
     }

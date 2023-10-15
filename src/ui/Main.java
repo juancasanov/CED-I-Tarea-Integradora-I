@@ -30,7 +30,9 @@ public class Main {
         System.out.println("3. Modify Tasks");
         System.out.println("4. Remove Tasks");
         System.out.println("5. Undo");
-        System.out.println("6. Exit");
+        System.out.println("6. Modify, Finish (Delete) Priority Task");
+        System.out.println("7. Modify, Finish (Delete) Non Priority Task");
+        System.out.println("8. Exit");
         System.out.print("Select an option: ");
     }
 
@@ -43,7 +45,7 @@ public class Main {
                 displayTasks();
                 break;
             case 3:
-                modifyTask();
+                modifyTask("");
                 break;
             case 4:
                 removeTasks();
@@ -53,6 +55,12 @@ public class Main {
                 controller.undoAction();
                 break;
             case 6:
+                actionsWithPriorityTask();
+                break;
+            case 7:
+                actionsWithNonPriorityTask();
+                break;
+            case 8:
                 System.out.println("Exiting the program...");
                 System.exit(0);
                 break;
@@ -73,6 +81,11 @@ public class Main {
     public static void main(String[] args) {
         Main view = new Main();
         view.start();
+        try {
+            view.reader.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void addTask() {
@@ -92,9 +105,8 @@ public class Main {
             return;
         }
 
-        int isPriority;
         System.out.println("Enter the priority of the task 1. Priority 2. Non priority:");
-        isPriority = validateIntegerInput();
+        int isPriority = validateIntegerInput();
         if(isPriority!=1 && isPriority!=2){
             System.out.println("The option typed is incorrect, Task was not created");
             return;
@@ -117,15 +129,16 @@ public class Main {
         controller.displayTasks();
     }
 
-    private void modifyTask(){
+    private void modifyTask(String title){
         String newTitle = "";
         String newDescription = "";
         String newDeadline = "";
         int newPriority = 0;
         Calendar deadline = Calendar.getInstance();
-        System.out.println("Enter the title of the task to modify:");
-        String title = getStringInput();
-        //reader.nextLine();
+        if(title.isEmpty()) {
+            System.out.println("Enter the title of the task to modify:");
+            title = getStringInput();
+        }
 
         System.out.println("Which attribute do you want to modify? (1. Title, 2. Description, 3. Deadline, 4. Priority)");
         int option = validateIntegerInput();
@@ -159,20 +172,64 @@ public class Main {
                 newPriority = validateIntegerInput();
                 if(newPriority<0 || newPriority>5){
                     System.out.println("The priority typed was incorrect, Task will not be modified");
+                    return;
                 }
                 break;
             default:
                 System.out.println("Invalid option. Please select a valid option.");
+                return;
         }
         System.out.println(controller.modifyTask(title,newTitle,newDescription,deadline,newPriority,option));
     }
     
     public void removeTasks() {
-
         System.out.println("Write the task you want to remove:");
         String title = getStringInput();
         System.out.println(controller.removeTask(title));
-        //System.out.println("The task was removed successfully!");
+    }
+
+    public void actionsWithPriorityTask(){
+        if(controller.getPriorityTask()!=null){
+            System.out.println(controller.getMessagePriorityTask());
+            System.out.println("What would you like to do?");
+            System.out.println("1. Modify, 2. Finish (Delete)");
+            System.out.print("Option: ");
+            int option = validateIntegerInput();
+            if(option!=1 && option!=2){
+                System.out.println("Options typed are incorrect, the task will not be modify.");
+                return;
+            }
+            if(option==1){
+                modifyTask(controller.getPriorityTask().getTitle());
+            }else{
+                controller.removeTask(controller.getPriorityTask().getTitle());
+                System.out.println("The task has been removed");
+            }
+        }else{
+            System.out.println("There's no priority task.");
+        }
+    }
+
+    public void actionsWithNonPriorityTask(){
+            if(controller.getNonPriorityTask()!=null){
+            System.out.println(controller.getMessageNonPriorityTask());
+            System.out.println("What would you like to do?");
+            System.out.print("1. Modify, 2. Finish (Delete)");
+            System.out.print("Option: ");
+            int option = validateIntegerInput();
+            if(option!=1 && option!=2){
+                System.out.println("Options typed are incorrect, the task will not be modify.");
+                return;
+            }
+            if(option==1){
+                modifyTask(controller.getNonPriorityTask().getTitle());
+            }else{
+                controller.removeTask(controller.getNonPriorityTask().getTitle());
+                System.out.println("The task has been removed");
+            }
+        }else{
+            System.out.println("There's no non priority task.");
+        }
     }
 
     private int validateIntegerInput() {
@@ -183,7 +240,6 @@ public class Main {
             if(isInteger(read)){
                 input = Integer.parseInt(read);
             }
-            reader = new BufferedReader(new InputStreamReader(System.in));
         } catch (IOException e) {
             reader = new BufferedReader(new InputStreamReader(System.in));
         }
@@ -203,7 +259,6 @@ public class Main {
         String input = "";
         try{
             input = reader.readLine();
-            reader = new BufferedReader(new InputStreamReader(System.in));
         }catch(IOException e){
             reader = new BufferedReader(new InputStreamReader(System.in));
         }
